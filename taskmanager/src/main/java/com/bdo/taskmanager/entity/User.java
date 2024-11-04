@@ -2,6 +2,8 @@ package com.bdo.taskmanager.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.SQLDelete;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -14,6 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 public class User {
 
   @Id
@@ -22,6 +25,7 @@ public class User {
   private String fullName;
   private String password;
   private String email;
+  private boolean deleted = Boolean.FALSE;
   @Embedded
   private Address address;
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -37,6 +41,14 @@ public class User {
     this.email = email;
     this.address = address;
     this.tasks = tasks;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public String getFullName() {
@@ -77,6 +89,14 @@ public class User {
 
   public void setTasks(List<Task> tasks) {
     this.tasks = tasks;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 
 }

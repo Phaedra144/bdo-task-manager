@@ -7,7 +7,7 @@ public class Address {
   private String city;
   private String zip;
   private String street;
-  private int streetNumber;
+  private Integer streetNumber;
 
   public Address() {
   }
