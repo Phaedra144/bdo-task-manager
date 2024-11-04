@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -30,14 +31,32 @@ public class JpaRepositoryTests {
   @Autowired
   protected UserRepository userRepository;
 
+  @BeforeEach
+  public void setup() {
+    taskRepository.deleteAllInBatch();
+    userRepository.deleteAllInBatch();
+  }
+
   @Test
-  public void getAllUsers() {
+  public void testGetAllUsers() {
     User user = new User("John Doe", "password", "hello@test.com", null, Collections.emptyList());
     User savedUser = userRepository.save(user);
     List<User> users = userRepository.findAll();
-    assertEquals(2, users.size());
-    assertArrayEquals(savedUser.getTasks().toArray(),
-        users.get(users.size() - 1).getTasks().toArray());
+    assertEquals(1, users.size());
+    assertArrayEquals(savedUser.getTasks().toArray(), users.get(0).getTasks().toArray());
+  }
+
+  @Test
+  public void testGetTasksWhenOnlyUserIsSaved() {
+    Task task = new Task("Task 1", "Description 1");
+    User user = new User("John Doe", "password", "hello@test.com", null,
+        Collections.singletonList(task));
+    User savedUser = userRepository.save(user);
+    List<Task> tasks = taskRepository.findAll();
+    assertEquals(1, tasks.size());
+    assertEquals("Task 1", tasks.get(0).getTitle());
+    assertEquals("Description 1", tasks.get(0).getDescription());
+    assertEquals(savedUser.getTasks().get(0).getId(), tasks.get(0).getId());
   }
 
   @Test
@@ -91,6 +110,24 @@ public class JpaRepositoryTests {
     assertFalse(savedTask.isDeleted());
     taskRepository.delete(savedTask);
     Task deletedTask = taskRepository.findByIdEvenIfDeleted(savedTask.getId()).orElse(null);
+    assertNotNull(deletedTask);
+    assertTrue(deletedTask.isDeleted());
+  }
+
+  @Test
+  public void testSoftDeleteUserWithTask() {
+    Task task = new Task("Task 1", "Description 1");
+    User user = new User("John Doe", "password", "hello@test.com", null,
+        Collections.singletonList(task));
+    task.setUser(user);
+    User savedUser = userRepository.save(user);
+    assertNotNull(savedUser);
+    assertFalse(savedUser.isDeleted());
+    userRepository.delete(savedUser);
+    User deletedUser = userRepository.findByIdEvenIfDeleted(savedUser.getId()).orElse(null);
+    assertNotNull(deletedUser);
+    assertTrue(deletedUser.isDeleted());
+    Task deletedTask = deletedUser.getTasks().get(0);
     assertNotNull(deletedTask);
     assertTrue(deletedTask.isDeleted());
   }

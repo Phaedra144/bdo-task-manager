@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +20,8 @@ public class Task {
   private String title;
   private String description;
   private boolean deleted = Boolean.FALSE;
+  @ManyToOne
+  private User user;
 
   public Task() {
   }
@@ -58,6 +61,10 @@ public class Task {
 
   public void setDeleted(boolean deleted) {
     this.deleted = deleted;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
 }
