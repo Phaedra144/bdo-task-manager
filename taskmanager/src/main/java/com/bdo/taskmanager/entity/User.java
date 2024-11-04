@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 
 import com.bdo.taskmanager.dto.Address;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
@@ -26,10 +27,11 @@ public class User {
   private String fullName;
   private String password;
   private String email;
+  @JsonIgnore
   private boolean deleted = Boolean.FALSE;
   @Embedded
   private Address address;
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
   private List<Task> tasks;
 
   public User() {
