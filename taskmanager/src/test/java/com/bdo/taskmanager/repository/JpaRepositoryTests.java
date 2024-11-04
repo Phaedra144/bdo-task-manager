@@ -91,7 +91,7 @@ public class JpaRepositoryTests {
     assertNotNull(savedUser);
     assertFalse(savedUser.isDeleted());
     userRepository.delete(savedUser);
-    User deletedUser = userRepository.findByIdNonDeleted(savedUser.getId()).orElse(null);
+    User deletedUser = userRepository.findById(savedUser.getId()).orElse(null);
     assertNotNull(deletedUser);
     assertTrue(deletedUser.isDeleted());
   }
@@ -118,7 +118,7 @@ public class JpaRepositoryTests {
     assertNotNull(savedUser);
     assertFalse(savedUser.isDeleted());
     userRepository.delete(savedUser);
-    User deletedUser = userRepository.findByIdNonDeleted(savedUser.getId()).orElse(null);
+    User deletedUser = userRepository.findById(savedUser.getId()).orElse(null);
     assertNotNull(deletedUser);
     assertTrue(deletedUser.isDeleted());
     Task deletedTask = deletedUser.getTasks().get(0);

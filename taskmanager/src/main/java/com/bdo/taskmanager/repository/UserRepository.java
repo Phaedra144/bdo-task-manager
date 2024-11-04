@@ -11,6 +11,9 @@ import com.bdo.taskmanager.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+  @Query("SELECT u FROM User u WHERE u.id = :id")
+  Optional<User> findById(@Param("id") Integer id);
+
   @Query("SELECT u FROM User u WHERE u.id = :id AND u.deleted = false")
   Optional<User> findByIdNonDeleted(@Param("id") Integer id);
 
