@@ -1,12 +1,12 @@
 services:
   taskmanager-postgres:
-    image: 'postgres:latest'
+    image: postgres:16.3
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_DB=bdotaskmanager'
+      - 'POSTGRES_PASSWORD=bdo'
+      - 'POSTGRES_USER=bdo'
     ports:
-      - '5432'
+      - "127.0.0.1:5432:5432"
     volumes:
       - "./conf.d:/etc/postgresql/conf.d:ro"
     networks:
