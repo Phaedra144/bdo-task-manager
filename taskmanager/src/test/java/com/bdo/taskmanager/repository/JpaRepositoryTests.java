@@ -9,20 +9,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.bdo.taskmanager.entity.Task;
 import com.bdo.taskmanager.entity.User;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+@ActiveProfiles("test")
+@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class), properties = {
+    "spring.datasource.url=jdbc:h2:mem:testdb", "spring.jpa.hibernate.ddl-auto=create-drop" })
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JpaRepositoryTests {
 
   @Autowired
@@ -30,12 +31,6 @@ public class JpaRepositoryTests {
 
   @Autowired
   protected UserRepository userRepository;
-
-  @BeforeEach
-  public void setup() {
-    taskRepository.deleteAllInBatch();
-    userRepository.deleteAllInBatch();
-  }
 
   @Test
   public void testGetAllUsers() {
