@@ -21,8 +21,7 @@ import com.bdo.taskmanager.entity.Task;
 import com.bdo.taskmanager.entity.User;
 
 @ActiveProfiles("test")
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class), properties = {
-    "spring.datasource.url=jdbc:h2:mem:testdb", "spring.jpa.hibernate.ddl-auto=create-drop" })
+@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JpaRepositoryTests {
 
