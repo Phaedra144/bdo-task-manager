@@ -1,4 +1,4 @@
-package com.bdo.taskmanager.entity;
+package com.bdo.taskmanager.dto;
 
 import jakarta.persistence.Embeddable;
 
@@ -43,7 +43,7 @@ public class Address {
     this.street = street;
   }
 
-  public int getStreetNumber() {
+  public Integer getStreetNumber() {
     return streetNumber;
   }
 

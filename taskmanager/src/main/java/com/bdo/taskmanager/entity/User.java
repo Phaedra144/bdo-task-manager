@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 
+import com.bdo.taskmanager.dto.Address;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
