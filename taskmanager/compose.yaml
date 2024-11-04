@@ -1,5 +1,5 @@
 services:
-  postgres:
+  taskmanager-postgres:
     image: 'postgres:latest'
     environment:
       - 'POSTGRES_DB=mydatabase'
@@ -7,3 +7,38 @@ services:
       - 'POSTGRES_USER=myuser'
     ports:
       - '5432'
+    volumes:
+      - "./conf.d:/etc/postgresql/conf.d:ro"
+    networks:
+      - taskmanager-network
+
+  taskmanager-postgres-admin:
+    image: dpage/pgadmin4:latest
+    restart: always
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@taskmanager.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_MAX_LOGIN_ATTEMPTS: 0
+
+    volumes:
+      - ../../.pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "127.0.0.1:10000:80"
+
+    networks:
+      - taskmanager-network
+
+    depends_on:
+      - taskmanager-postgres
+
+    healthcheck:
+      test: ["CMD", "wget", "-O", "-", "http://0.0.0.0:80/misc/ping"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+networks:
+  taskmanager-network:
+    external: true
