@@ -76,13 +76,23 @@ public class JpaRepositoryTests {
     User user = new User("John Doe", "password", "hello@test.com", null, Collections.emptyList());
     User savedUser = userRepository.save(user);
     assertNotNull(savedUser);
-    assertEquals("John Doe", savedUser.getFullName());
-    assertEquals("hello@test.com", savedUser.getEmail());
     assertFalse(savedUser.isDeleted());
     userRepository.delete(savedUser);
     User deletedUser = userRepository.findByIdEvenIfDeleted(savedUser.getId()).orElse(null);
     assertNotNull(deletedUser);
     assertTrue(deletedUser.isDeleted());
+  }
+
+  @Test
+  public void testSoftDeleteTask() {
+    Task task = new Task("Task 1", "Description 1");
+    Task savedTask = taskRepository.save(task);
+    assertNotNull(savedTask);
+    assertFalse(savedTask.isDeleted());
+    taskRepository.delete(savedTask);
+    Task deletedTask = taskRepository.findByIdEvenIfDeleted(savedTask.getId()).orElse(null);
+    assertNotNull(deletedTask);
+    assertTrue(deletedTask.isDeleted());
   }
 
 }

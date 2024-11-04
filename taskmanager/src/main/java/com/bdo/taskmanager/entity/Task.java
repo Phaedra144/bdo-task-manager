@@ -1,5 +1,7 @@
 package com.bdo.taskmanager.entity;
 
+import org.hibernate.annotations.SQLDelete;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tasks")
+@SQLDelete(sql = "UPDATE tasks SET deleted = true WHERE id=?")
 public class Task {
 
   @Id
@@ -15,6 +18,7 @@ public class Task {
   private int id;
   private String title;
   private String description;
+  private boolean deleted = Boolean.FALSE;
 
   public Task() {
   }
@@ -22,6 +26,14 @@ public class Task {
   public Task(String title, String description) {
     this.title = title;
     this.description = description;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   public String getTitle() {
@@ -38,6 +50,14 @@ public class Task {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
   }
 
 }
