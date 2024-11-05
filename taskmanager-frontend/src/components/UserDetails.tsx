@@ -1,7 +1,13 @@
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 
 export const UserDetails = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const notModifiable = queryParams.get('no-modify');
+
   const initialValues = {
     fullName: '',
     email: '',
@@ -16,21 +22,16 @@ export const UserDetails = () => {
   const {
     register,
     formState: { errors },
-    handleSubmit,
   } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: initialValues,
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   return (
     <div className="container w-75">
       <h1>User details</h1>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form>
         <Row className="align-items-center mt-4">
           <Col className="col-sm-2">
             <Form.Label>Full name</Form.Label>
@@ -79,9 +80,11 @@ export const UserDetails = () => {
             />
           </Col>
         </Row>
-        <Button className="mt-5" type="submit">
-          Update
-        </Button>
+        {!notModifiable && (
+          <Button className="mt-5" type="submit">
+            Update
+          </Button>
+        )}
       </Form>
     </div>
   );

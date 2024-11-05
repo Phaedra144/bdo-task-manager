@@ -53,7 +53,7 @@ export const UserTable = () => {
                   )}
                 </td>
                 <td>
-                  <Link to={`/users/${user.id}`} className='link-dark'>
+                  <Link to={`/users/${user.id}?no-modify=true`} className='link-dark'>
                     <FaEye />
                   </Link>
                 </td>
