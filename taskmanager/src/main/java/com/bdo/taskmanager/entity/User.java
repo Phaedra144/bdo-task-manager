@@ -6,6 +6,7 @@ import org.hibernate.annotations.SQLDelete;
 
 import com.bdo.taskmanager.dto.Address;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
@@ -35,6 +36,7 @@ public class User {
       cascade = { CascadeType.MERGE, CascadeType.REMOVE },
       orphanRemoval = true,
       mappedBy = "user")
+  @JsonManagedReference
   private List<Task> tasks;
 
   public User() {

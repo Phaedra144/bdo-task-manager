@@ -2,6 +2,7 @@ package com.bdo.taskmanager.entity;
 
 import org.hibernate.annotations.SQLDelete;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -28,6 +29,7 @@ public class Task {
   private boolean deleted = Boolean.FALSE;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
+  @JsonBackReference
   private User user;
 
   @Column(name = "user_id", insertable = false, updatable = false)
