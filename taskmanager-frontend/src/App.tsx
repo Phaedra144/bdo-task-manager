@@ -1,13 +1,25 @@
-import { Header } from "./components/Header";
-import { UserTable } from "./components/UserTable";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { TaskManager } from './components/TaskManager';
+import { UserTable } from './components/UserTable';
+
+const router = createBrowserRouter([
+  {
+    element: <TaskManager />,
+    children: [
+      {
+        path: '/',
+        element: <UserTable />,
+      },
+      {
+        path: '/users',
+        element: <UserTable />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  return  (
-    <div>
-      <Header />
-      <UserTable />
-    </div>
-  )
+  return <RouterProvider router={router} />;
 }
 
 export default App;
