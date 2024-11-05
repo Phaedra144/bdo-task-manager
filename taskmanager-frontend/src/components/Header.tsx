@@ -14,9 +14,6 @@ export const Header = () => {
                 <li className="nav-item fs-5 me-3">
                   <NavLink to="/users">Users</NavLink>
                 </li>
-                <li className="nav-item fs-5">
-                  <NavLink to="/tasks">Tasks</NavLink>
-                </li>
               </ul>
             </div>
           </nav>
