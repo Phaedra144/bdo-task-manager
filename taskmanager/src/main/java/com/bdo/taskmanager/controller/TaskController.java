@@ -70,7 +70,7 @@ public class TaskController {
     return new ResponseEntity<>(updatedTask, HttpStatus.OK);
   }
 
-  @DeleteMapping("/users/{userId}/tasks")
+  @DeleteMapping("/users/{userId}/tasks/{id}")
   public ResponseEntity<String> deleteTask(@PathVariable int userId, @PathVariable int id) {
     Optional<User> user = userService.findById(userId);
     if (user.isEmpty()) {
@@ -80,7 +80,7 @@ public class TaskController {
     if (task.isEmpty()) {
       throw new TaskNotFoundException("Task not found");
     }
-    taskService.delete(task.get());
+    taskService.deleteById(id);
     return new ResponseEntity<>(
         String.format("Task with id: %d deleted successfully", task.get().getId()), HttpStatus.OK);
   }
