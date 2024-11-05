@@ -31,15 +31,12 @@ public class UserController {
 
   @GetMapping("/users")
   public List<User> getUsers() {
-    return userService.findAllWithNonDeletedTasks();
+    return userService.getAllUser();
   }
 
   @GetMapping("/users/{id}")
   public ResponseEntity<User> getUserById(@PathVariable int id) {
-    if (userService.findByIdWithNonDeletedTasks(id).isEmpty()) {
-      throw new UserNotFoundException("User not found");
-    }
-    return new ResponseEntity<>(userService.findByIdWithNonDeletedTasks(id).get(), HttpStatus.OK);
+    return new ResponseEntity<>(userService.getUserById(id).get(), HttpStatus.OK);
   }
 
   @PostMapping("/users")
@@ -50,23 +47,12 @@ public class UserController {
 
   @PutMapping("/users")
   public ResponseEntity<User> updateUser(@RequestBody User user) {
-    Optional<User> existingUser = userService.findByIdWithNonDeletedTasks(user.getId());
-    if (existingUser.isEmpty()) {
-      throw new UserNotFoundException("User not found, update failed");
-    }
-    if (!existingUser.get().getEmail().equals(user.getEmail())) {
-      throw new EmailCanNotBeChanged("Email can not be changed");
-    }
     User updatedUser = userService.updateUser(user);
     return new ResponseEntity<>(updatedUser, HttpStatus.OK);
   }
 
   @DeleteMapping("/users/{id}")
   public ResponseEntity<String> deleteUser(@PathVariable int id) {
-    Optional<User> existingUser = userService.findByIdWithNonDeletedTasks(id);
-    if (existingUser.isEmpty()) {
-      throw new UserNotFoundException("User not found, delete failed");
-    }
     userService.deleteById(id);
     return new ResponseEntity<>(String.format("User with id: %d deleted successfully", id),
         HttpStatus.OK);

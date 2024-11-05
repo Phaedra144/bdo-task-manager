@@ -52,7 +52,7 @@ public class User {
     this.tasks = tasks;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
