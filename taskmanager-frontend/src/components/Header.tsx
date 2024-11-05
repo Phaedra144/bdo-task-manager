@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom';
+
 export const Header = () => {
   return (
     <header className="border-bottom border-light border-5 mb-5 p-2">
@@ -7,10 +9,14 @@ export const Header = () => {
             <a className="navbar-brand ms-2 fs-2 fw-bold text-black">
               Task Manager
             </a>
-            <div className="collapse navbar-collapse justify-content-center">
+            <div className="collapse navbar-collapse justify-content-end">
               <ul className="navbar-nav">
-                <li className="nav-item fs-5">Users</li>
-                <li className="nav-item fs-5">Tasks</li>
+                <li className="nav-item fs-5 me-3">
+                  <NavLink to="/users">Users</NavLink>
+                </li>
+                <li className="nav-item fs-5">
+                  <NavLink to="/tasks">Tasks</NavLink>
+                </li>
               </ul>
             </div>
           </nav>
