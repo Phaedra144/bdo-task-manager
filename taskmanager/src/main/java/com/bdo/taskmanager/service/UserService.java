@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.bdo.taskmanager.entity.User;
+import com.bdo.taskmanager.hashing.HashingService;
 import com.bdo.taskmanager.repository.UserRepository;
 
 @Service

@@ -1,4 +1,4 @@
-package com.bdo.taskmanager.service;
+package com.bdo.taskmanager.hashing;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

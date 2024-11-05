@@ -1,4 +1,4 @@
-package com.bdo.taskmanager.service;
+package com.bdo.taskmanager.hashing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

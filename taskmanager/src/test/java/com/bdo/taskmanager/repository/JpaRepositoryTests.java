@@ -103,7 +103,7 @@ public class JpaRepositoryTests {
     assertNotNull(savedTask);
     assertFalse(savedTask.isDeleted());
     taskRepository.delete(savedTask);
-    Task deletedTask = taskRepository.findByIdEvenIfDeleted(savedTask.getId()).orElse(null);
+    Task deletedTask = taskRepository.findByIdWithDeleted(savedTask.getId()).orElse(null);
     assertNotNull(deletedTask);
     assertTrue(deletedTask.isDeleted());
   }
