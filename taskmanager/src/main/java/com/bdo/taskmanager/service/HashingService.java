@@ -24,6 +24,9 @@ public class HashingService {
   }
 
   private static String encodeWithHashing(String text, byte[] salt) {
+    if (text == null) {
+      return null;
+    }
     KeySpec spec = new PBEKeySpec(text.toCharArray(), salt, 65536, 128);
     SecretKeyFactory factory = null;
     byte[] hash = null;
