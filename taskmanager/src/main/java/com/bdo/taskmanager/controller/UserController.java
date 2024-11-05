@@ -1,15 +1,20 @@
 package com.bdo.taskmanager.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bdo.taskmanager.entity.User;
+import com.bdo.taskmanager.exception.EmailCanNotBeChanged;
 import com.bdo.taskmanager.exception.UserNotFoundException;
 import com.bdo.taskmanager.service.UserService;
 
@@ -34,6 +39,25 @@ public class UserController {
       throw new UserNotFoundException("User not found");
     }
     return new ResponseEntity<>(userService.findByIdWithNonDeletedTasks(id).get(), HttpStatus.OK);
+  }
+
+  @PostMapping("/users")
+  public ResponseEntity<User> createUser(@RequestBody User user) {
+    User savedUser = userService.save(user);
+    return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+  }
+
+  @PutMapping("/users/{id}")
+  public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
+    Optional<User> existingUser = userService.findByIdWithNonDeletedTasks(id);
+    if (existingUser.isEmpty()) {
+      throw new UserNotFoundException("User not found, update failed");
+    }
+    if (existingUser.get().getEmail() != user.getEmail()) {
+      throw new EmailCanNotBeChanged("Email can not be changed");
+    }
+    User savedUser = userService.save(user);
+    return new ResponseEntity<>(savedUser, HttpStatus.OK);
   }
 
 }

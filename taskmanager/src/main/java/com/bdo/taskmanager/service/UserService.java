@@ -25,4 +25,8 @@ public class UserService {
     return userRepository.findByIdWithNonDeletedTasks(id);
   }
 
+  public User save(User user) {
+    return userRepository.save(user);
+  }
+
 }
