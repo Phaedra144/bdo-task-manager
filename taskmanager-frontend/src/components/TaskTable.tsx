@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTasksByUserid } from '../api/TaskManagerApiService';
+import { getTasksByUserId } from '../api/TaskManagerApiService';
 import { Task } from '../types/UserTasksTypes';
 
 export const TaskTable = () => {
@@ -14,7 +14,7 @@ export const TaskTable = () => {
 
   const fetchTasks = () => {
     if (params.userId) {
-      getTasksByUserid(Number.parseInt(params.userId))
+      getTasksByUserId(Number.parseInt(params.userId))
         .then((response) => {
           console.log(response);
           setTasks(response.data);

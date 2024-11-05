@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
-import { FaEye } from 'react-icons/fa';
-import { FaPencilAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaEye, FaPencilAlt } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
 import { getUsers } from '../api/TaskManagerApiService';
 import { User } from '../types/UserTasksTypes';
 
 export const UserTable = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const { userId } = useParams();
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [userId]);
 
   const fetchUsers = () => {
     getUsers()
       .then((response) => {
-        console.log(response);
         setUsers(response.data);
       })
       .catch((error) => {
@@ -51,7 +50,7 @@ export const UserTable = () => {
                   {user.address?.street} {user.address?.streetNumber}
                 </td>
                 <td>
-                  {user.tasks.length > 0 && (
+                  {user.tasks && user.tasks.length > 0 && (
                     <Link to={`/users/${user.id}/tasks`}> Check tasks</Link>
                   )}
                 </td>
@@ -64,10 +63,7 @@ export const UserTable = () => {
                   </Link>
                 </td>
                 <td>
-                  <Link
-                    to={`/users/${user.id}`}
-                    className="link-dark"
-                  >
+                  <Link to={`/users/${user.id}`} className="link-dark">
                     <FaPencilAlt />
                   </Link>
                 </td>

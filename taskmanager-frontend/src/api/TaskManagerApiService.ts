@@ -13,7 +13,7 @@ export const getUserById = (userId: number) => {
   return apiClient.get(`/users/${userId}`);
 };
 
-export const getTasksByUserid = (userId: number) => {
+export const getTasksByUserId = (userId: number) => {
   return apiClient.get(`/users/${userId}/tasks`);
 };
 

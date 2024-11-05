@@ -59,13 +59,13 @@ export const UserDetails = () => {
     defaultValues: initialValues,
   });
 
-  const onSubmit = (data) => {
-    data = {
+  const onSubmit = (data: typeof initialValues) => {
+    const updatedUser: User = {
       ...data,
       id: userId,
-      tasks: user?.tasks,
+      tasks: user?.tasks || [],
     };
-    updateUser(data);
+    updateUser(updatedUser);
     navigate('/users');
   };
 
