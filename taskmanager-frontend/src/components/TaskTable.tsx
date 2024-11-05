@@ -14,7 +14,7 @@ export const TaskTable = () => {
 
   const fetchTasks = () => {
     if (params.userId) {
-      getTasksByUserid(params.userId)
+      getTasksByUserid(Number.parseInt(params.userId))
         .then((response) => {
           console.log(response);
           setTasks(response.data);

@@ -1,13 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useLocation, useParams } from 'react-router-dom';
-import { getUserById } from '../api/TaskManagerApiService';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getUserById, updateUser } from '../api/TaskManagerApiService';
+import { User } from '../types/UserTasksTypes';
 
 export const UserDetails = () => {
   const location = useLocation();
   const params = useParams();
   const queryParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState<User>();
 
   const userId = Number.parseInt(params.userId || '0');
   const notModifiable = Boolean(queryParams.get('no-modify'));
@@ -20,6 +24,7 @@ export const UserDetails = () => {
     if (userId) {
       getUserById(userId)
         .then((response) => {
+          setUser(response.data);
           reset({
             fullName: response.data.fullName,
             email: response.data.email,
@@ -40,23 +45,34 @@ export const UserDetails = () => {
       zip: '',
       street: '',
       streetNumber: '',
-    }
+    },
   };
 
   const {
     register,
     formState: { errors },
     reset,
+    handleSubmit,
   } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: initialValues,
   });
 
+  const onSubmit = (data) => {
+    data = {
+      ...data,
+      id: userId,
+      tasks: user?.tasks,
+    };
+    updateUser(data);
+    navigate('/users');
+  };
+
   return (
     <div className="container w-75">
       <h1>User details</h1>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Row className="align-items-center mt-4">
           <Col className="col-sm-2">
             <Form.Label>Full name</Form.Label>

@@ -1,11 +1,11 @@
-import { Nullable } from "./common";
+import { Nullable } from './common';
 
 export interface User {
   id: number;
   fullName: Nullable<string>;
   email: Nullable<string>;
   address: Nullable<Address>;
-  tasks: Task[];
+  tasks: Task[] | undefined;
 }
 
 export interface Address {
