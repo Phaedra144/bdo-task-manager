@@ -1,7 +1,6 @@
 package com.bdo.taskmanager.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,74 +14,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bdo.taskmanager.entity.Task;
-import com.bdo.taskmanager.entity.User;
-import com.bdo.taskmanager.exception.TaskNotFoundException;
-import com.bdo.taskmanager.exception.UserNotFoundException;
 import com.bdo.taskmanager.service.TaskService;
-import com.bdo.taskmanager.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1")
 public class TaskController {
 
   private TaskService taskService;
-  private UserService userService;
 
-  public TaskController(TaskService taskService, UserService userService) {
+  public TaskController(TaskService taskService) {
     this.taskService = taskService;
-    this.userService = userService;
   }
 
   @GetMapping("/users/{userId}/tasks")
   public List<Task> getTasks(@PathVariable int userId) {
-    return taskService.findAllNonDeleted(userId);
+    return taskService.getTasksByUserId(userId);
   }
 
   @GetMapping("/users/{userId}/tasks/{id}")
   public Task getTaskById(@PathVariable int userId, @PathVariable int id) {
-    if (taskService.findByIdNonDeleted(userId, id).isEmpty()) {
-      throw new TaskNotFoundException("Task not found");
-    }
-    return taskService.findByIdNonDeleted(userId, id).get();
+    return taskService.getTasksByUserIdAndId(userId, id).get();
   }
 
   @PostMapping("/users/{userId}/tasks")
   public ResponseEntity<Task> createTask(@PathVariable int userId, @RequestBody Task entity) {
-    Optional<User> user = userService.findById(userId);
-    if (user.isEmpty()) {
-      throw new UserNotFoundException("User not found");
-    }
-    Task savedTask = taskService.save(user.get(), entity);
+    Task savedTask = taskService.save(userId, entity);
     return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
   }
 
   @PutMapping("/users/{userId}/tasks")
   public ResponseEntity<Task> updateTask(@PathVariable int userId, @RequestBody Task entity) {
-    Optional<User> user = userService.findById(userId);
-    if (user.isEmpty()) {
-      throw new UserNotFoundException("User not found");
-    }
-    Optional<Task> task = taskService.findByIdNonDeleted(userId, entity.getId());
-    if (task.isEmpty()) {
-      throw new TaskNotFoundException("Task not found");
-    }
-    Task updatedTask = taskService.update(entity, user.get());
+    Task updatedTask = taskService.update(userId, entity);
     return new ResponseEntity<>(updatedTask, HttpStatus.OK);
   }
 
   @DeleteMapping("/users/{userId}/tasks/{id}")
   public ResponseEntity<String> deleteTask(@PathVariable int userId, @PathVariable int id) {
-    Optional<User> user = userService.findById(userId);
-    if (user.isEmpty()) {
-      throw new UserNotFoundException("User not found");
-    }
-    Optional<Task> task = taskService.findByIdNonDeleted(userId, id);
-    if (task.isEmpty()) {
-      throw new TaskNotFoundException("Task not found");
-    }
-    taskService.deleteById(id);
-    return new ResponseEntity<>(
-        String.format("Task with id: %d deleted successfully", task.get().getId()), HttpStatus.OK);
+    taskService.deleteById(userId, id);
+    return new ResponseEntity<>(String.format("Task with id: %d deleted successfully", id),
+        HttpStatus.OK);
   }
 
 }
