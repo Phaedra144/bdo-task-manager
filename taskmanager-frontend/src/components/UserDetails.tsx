@@ -1,12 +1,36 @@
+import { useEffect } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { getUserById } from '../api/TaskManagerApiService';
 
 export const UserDetails = () => {
   const location = useLocation();
+  const params = useParams();
   const queryParams = new URLSearchParams(location.search);
 
-  const notModifiable = queryParams.get('no-modify');
+  const userId = Number.parseInt(params.userId || '0');
+  const notModifiable = Boolean(queryParams.get('no-modify'));
+
+  useEffect(() => {
+    getUser();
+  }, [userId]);
+
+  const getUser = () => {
+    if (userId) {
+      getUserById(userId)
+        .then((response) => {
+          reset({
+            fullName: response.data.fullName,
+            email: response.data.email,
+            address: response.data.address,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
 
   const initialValues = {
     fullName: '',
@@ -16,12 +40,13 @@ export const UserDetails = () => {
       zip: '',
       street: '',
       streetNumber: '',
-    },
+    }
   };
 
   const {
     register,
     formState: { errors },
+    reset,
   } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -40,6 +65,7 @@ export const UserDetails = () => {
             <Form.Control
               className={errors.fullName ? 'is-invalid' : ''}
               type="text"
+              disabled={notModifiable}
               {...register('fullName', {
                 required: 'Name is required',
               })}
@@ -57,8 +83,9 @@ export const UserDetails = () => {
           </Col>
           <Col className="col-sm-10">
             <Form.Control
-              className={errors.fullName ? 'is-invalid' : ''}
+              className={errors.email ? 'is-invalid' : ''}
               type="email"
+              disabled={notModifiable}
               {...register('email', {
                 required: 'Email is required',
               })}
@@ -70,13 +97,53 @@ export const UserDetails = () => {
         )}
         <Row className="align-items-center mt-4">
           <Col className="col-sm-2">
-            <Form.Label>Address</Form.Label>
+            <Form.Label>City</Form.Label>
           </Col>
           <Col className="col-sm-10">
             <Form.Control
-              className={errors.address ? 'is-invalid' : ''}
+              className={errors.address?.city ? 'is-invalid' : ''}
               type="text"
-              {...register('address')}
+              disabled={notModifiable}
+              {...register('address.city')}
+            />
+          </Col>
+        </Row>
+        <Row className="align-items-center mt-4">
+          <Col className="col-sm-2">
+            <Form.Label>Zip</Form.Label>
+          </Col>
+          <Col className="col-sm-10">
+            <Form.Control
+              className={errors.address?.zip ? 'is-invalid' : ''}
+              type="text"
+              disabled={notModifiable}
+              {...register('address.zip')}
+            />
+          </Col>
+        </Row>
+        <Row className="align-items-center mt-4">
+          <Col className="col-sm-2">
+            <Form.Label>Street</Form.Label>
+          </Col>
+          <Col className="col-sm-10">
+            <Form.Control
+              className={errors.address?.street ? 'is-invalid' : ''}
+              type="text"
+              disabled={notModifiable}
+              {...register('address.street')}
+            />
+          </Col>
+        </Row>
+        <Row className="align-items-center mt-4">
+          <Col className="col-sm-2">
+            <Form.Label>Street number</Form.Label>
+          </Col>
+          <Col className="col-sm-10">
+            <Form.Control
+              className={errors.address?.streetNumber ? 'is-invalid' : ''}
+              type="number"
+              disabled={notModifiable}
+              {...register('address.streetNumber')}
             />
           </Col>
         </Row>

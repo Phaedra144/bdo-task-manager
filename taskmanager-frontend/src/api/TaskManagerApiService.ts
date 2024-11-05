@@ -8,6 +8,10 @@ export const getUsers = () => {
   return apiClient.get('/users');
 };
 
-export const getTasksByUserid = (userId: string) => {
+export const getUserById = (userId: number) => {
+  return apiClient.get(`/users/${userId}`);
+};
+
+export const getTasksByUserid = (userId: number) => {
   return apiClient.get(`/users/${userId}/tasks`);
 };
