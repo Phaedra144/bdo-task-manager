@@ -18,6 +18,10 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
+  public Optional<User> findById(int id) {
+    return userRepository.findById(id);
+  }
+
   public List<User> findAllWithNonDeletedTasks() {
     return userRepository.findAllNonDeletedWithNonDeletedTasks();
   }

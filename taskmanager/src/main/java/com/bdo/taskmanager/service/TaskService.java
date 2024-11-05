@@ -6,23 +6,29 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.bdo.taskmanager.entity.Task;
+import com.bdo.taskmanager.entity.User;
 import com.bdo.taskmanager.repository.TaskRepository;
 
 @Service
 public class TaskService {
 
-  TaskRepository taskRepository;
+  private TaskRepository taskRepository;
 
-  public TaskService(TaskRepository taskRepository) {
+  public TaskService(TaskRepository taskRepository, UserService userService) {
     this.taskRepository = taskRepository;
   }
 
-  public List<Task> findAllNonDeleted() {
-    return taskRepository.findAllNonDeleted();
+  public List<Task> findAllNonDeleted(int userId) {
+    return taskRepository.findAllNonDeleted(userId);
   }
 
-  public Optional<Task> findByIdNonDeleted(int id) {
-    return taskRepository.findByIdNonDeleted(id);
+  public Optional<Task> findByIdNonDeleted(int userId, int id) {
+    return taskRepository.findByIdNonDeleted(userId, id);
+  }
+
+  public Task save(User user, Task task) {
+    task.setUser(user);
+    return taskRepository.save(task);
   }
 
 }

@@ -14,10 +14,10 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
   @Query("SELECT t FROM Task t WHERE t.id = :id")
   Optional<Task> findByIdWithDeleted(@Param("id") Integer id);
 
-  @Query("SELECT t FROM Task t WHERE t.deleted = false AND t.id = :id")
-  Optional<Task> findByIdNonDeleted(@Param("id") Integer id);
+  @Query("SELECT t FROM Task t WHERE t.deleted = false AND t.id = :id AND t.user.id = :userId")
+  Optional<Task> findByIdNonDeleted(@Param("userId") Integer userId, @Param("id") Integer id);
 
-  @Query("SELECT t FROM Task t WHERE t.deleted = false")
-  List<Task> findAllNonDeleted();
+  @Query("SELECT t FROM Task t WHERE t.deleted = false AND t.user.id = :userId")
+  List<Task> findAllNonDeleted(@Param("userId") Integer userId);
 
 }
