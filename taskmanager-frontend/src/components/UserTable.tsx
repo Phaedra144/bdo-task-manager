@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FaEye } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { getUsers } from '../api/TaskManagerApiService';
 import { User } from '../types/UserTasksTypes';
@@ -33,6 +34,7 @@ export const UserTable = () => {
               <th>Email</th>
               <th>Address</th>
               <th>Tasks</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +51,11 @@ export const UserTable = () => {
                   {user.tasks.length > 0 && (
                     <Link to={`/users/${user.id}/tasks`}> Check tasks</Link>
                   )}
+                </td>
+                <td>
+                  <Link to={`/users/${user.id}`} className='link-dark'>
+                    <FaEye />
+                  </Link>
                 </td>
               </tr>
             ))}
