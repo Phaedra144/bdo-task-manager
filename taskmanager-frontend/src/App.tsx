@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { TaskManager } from './components/TaskManager';
+import { TaskTable } from './components/TaskTable';
 import { UserTable } from './components/UserTable';
 
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: '/users',
         element: <UserTable />,
+      },
+      {
+        path: '/tasks',
+        element: <TaskTable />,
       },
     ],
   },
