@@ -16,7 +16,7 @@ const router = createBrowserRouter([
         element: <UserTable />,
       },
       {
-        path: '/tasks',
+        path: '/users/:userId/tasks',
         element: <TaskTable />,
       },
     ],

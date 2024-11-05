@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getUsers } from '../api/TaskManagerApiService';
 import { User } from '../types/UserTasksTypes';
+import { Link } from 'react-router-dom';
 
 export const UserTable = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -45,9 +46,7 @@ export const UserTable = () => {
                   {user.address?.street} {user.address?.streetNumber}
                 </td>
                 <td>
-                  {user.tasks.map((task) => (
-                    <span key={task.id}>{task.title}; </span>
-                  ))}
+                  <Link to={`/users/${user.id}/tasks`}> Check tasks</Link>
                 </td>
               </tr>
             ))}

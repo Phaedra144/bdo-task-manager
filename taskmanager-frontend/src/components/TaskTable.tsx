@@ -1,22 +1,29 @@
-export const TaskTable = () => {
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getTasksByUserid } from '../api/TaskManagerApiService';
+import { Task } from '../types/UserTasksTypes';
 
-  const tasks = [
-    {
-      id: 1,
-      title: 'Task 1',
-      description: 'Description 1',
-    },
-    {
-      id: 2,
-      title: 'Task 2',
-      description: 'Description 2',
-    },
-    {
-      id: 3,
-      title: 'Task 3',
-      description: 'Description 3',
-    },
-  ];
+export const TaskTable = () => {
+  const params = useParams();
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = () => {
+    if (params.userId) {
+      getTasksByUserid(params.userId)
+        .then((response) => {
+          console.log(response);
+          setTasks(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
 
   return (
     <div className="container">
