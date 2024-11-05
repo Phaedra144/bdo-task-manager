@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { getUserById, updateUser } from '../api/TaskManagerApiService';
-import { User } from '../types/UserTasksTypes';
+import { getUserById, updateUser } from '../api/taskManagerApiService';
+import { User } from '../types/userTasksTypes';
 
 export const UserDetails = () => {
   const location = useLocation();

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User } from '../types/UserTasksTypes';
+import { User } from '../types/userTasksTypes';
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:8080/api/v1',

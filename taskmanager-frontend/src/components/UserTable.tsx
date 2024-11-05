@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { FaEye, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
-import { deleteUserById, getUsers } from '../api/TaskManagerApiService';
-import { User } from '../types/UserTasksTypes';
+import { deleteUserById, getUsers } from '../api/taskManagerApiService';
+import { User } from '../types/userTasksTypes';
 
 export const UserTable = () => {
   const [users, setUsers] = useState<User[]>([]);

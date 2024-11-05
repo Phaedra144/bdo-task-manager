@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTasksByUserId } from '../api/TaskManagerApiService';
-import { Task } from '../types/UserTasksTypes';
+import { getTasksByUserId } from '../api/taskManagerApiService';
+import { Task } from '../types/userTasksTypes';
 
 export const TaskTable = () => {
   const params = useParams();
