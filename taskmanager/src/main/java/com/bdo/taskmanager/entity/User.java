@@ -31,7 +31,10 @@ public class User {
   private boolean deleted = Boolean.FALSE;
   @Embedded
   private Address address;
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+  @OneToMany(
+      cascade = { CascadeType.MERGE, CascadeType.REMOVE },
+      orphanRemoval = true,
+      mappedBy = "user")
   private List<Task> tasks;
 
   public User() {
