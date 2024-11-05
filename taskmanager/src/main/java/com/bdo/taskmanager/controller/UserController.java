@@ -53,7 +53,7 @@ public class UserController {
     if (existingUser.isEmpty()) {
       throw new UserNotFoundException("User not found, update failed");
     }
-    if (existingUser.get().getEmail() != user.getEmail()) {
+    if (!existingUser.get().getEmail().equals(user.getEmail())) {
       throw new EmailCanNotBeChanged("Email can not be changed");
     }
     User savedUser = userService.save(user);
