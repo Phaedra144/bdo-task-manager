@@ -20,27 +20,6 @@ export const UserTable = () => {
       });
   };
 
-  const usersExample = [
-    {
-      id: 1,
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      address: '123 Main St',
-      tasks: [
-        {
-          id: 1,
-          title: 'Task 1',
-          description: 'Task 1 in details',
-        },
-        {
-          id: 2,
-          title: 'Task 2',
-          description: 'Task 2 in details',
-        },
-      ],
-    },
-  ];
-
   return (
     <div className="container">
       <h1>Users</h1>
