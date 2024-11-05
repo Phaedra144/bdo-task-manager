@@ -13,25 +13,35 @@ services:
       - taskmanager-network
 
   taskmanager-postgres-admin:
+    depends_on:
+      - taskmanager-postgres
     image: dpage/pgadmin4:latest
     restart: always
-
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@taskmanager.org
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_MAX_LOGIN_ATTEMPTS: 0
-
     volumes:
       - ../../.pgadmin:/var/lib/pgadmin
-
     ports:
       - "127.0.0.1:10000:80"
-
     networks:
       - taskmanager-network
 
+  bdo-taskmanager-api:
     depends_on:
       - taskmanager-postgres
+    build:
+      context: .
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/bdotaskmanager
+      - SPRING_DATASOURCE_USERNAME=bdo
+      - SPRING_DATASOURCE_PASSWORD=bdo
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - taskmanager-network
 
     healthcheck:
       test: ["CMD", "wget", "-O", "-", "http://0.0.0.0:80/misc/ping"]
