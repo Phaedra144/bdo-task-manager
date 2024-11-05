@@ -68,7 +68,8 @@ public class UserController {
       throw new UserNotFoundException("User not found, delete failed");
     }
     userService.deleteById(id);
-    return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+    return new ResponseEntity<>(String.format("User with id: %d deleted successfully", id),
+        HttpStatus.OK);
   }
 
 }
