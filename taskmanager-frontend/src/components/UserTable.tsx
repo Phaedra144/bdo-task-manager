@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getUsers } from '../api/TaskManagerApiService';
-import { User as UserType } from '../types/UserTasksTypes';
+import { User } from '../types/UserTasksTypes';
 
 export const UserTable = () => {
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     fetchUsers();
@@ -12,7 +12,7 @@ export const UserTable = () => {
   const fetchUsers = () => {
     getUsers()
       .then((response) => {
-        console.log(response)
+        console.log(response);
         setUsers(response.data);
       })
       .catch((error) => {
@@ -61,10 +61,13 @@ export const UserTable = () => {
                 <td>{user.id}</td>
                 <td>{user.fullName}</td>
                 <td>{user.email}</td>
-                {/* <td>{user.address}</td> */}
+                <td>
+                  {user.address?.city} {user.address?.zip}{' '}
+                  {user.address?.street} {user.address?.streetNumber}
+                </td>
                 <td>
                   {user.tasks.map((task) => (
-                    <span key={task.id}>{task.title} </span>
+                    <span key={task.id}>{task.title}; </span>
                   ))}
                 </td>
               </tr>

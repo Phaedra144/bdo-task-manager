@@ -1,17 +1,23 @@
+import { Nullable } from "./common";
+
 export interface User {
-    id: number;
-    fullName: string;
-    email: string;
-    city: string;
-    zip: string;
-    street: string;
-    streetNumber: string;
-    tasks: Task[];
+  id: number;
+  fullName: Nullable<string>;
+  email: Nullable<string>;
+  address: Nullable<Address>;
+  tasks: Task[];
+}
+
+export interface Address {
+  city: Nullable<string>;
+  zip: Nullable<string>;
+  street: Nullable<string>;
+  streetNumber: Nullable<string>;
 }
 
 export interface Task {
-    id: number;
-    title: string;
-    description: string;
-    userId: number;
+  id: number;
+  title: Nullable<string>;
+  description: Nullable<string>;
+  userId: number;
 }
