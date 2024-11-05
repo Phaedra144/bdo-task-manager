@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaEye } from 'react-icons/fa';
+import { FaPencilAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { getUsers } from '../api/TaskManagerApiService';
 import { User } from '../types/UserTasksTypes';
@@ -35,6 +36,8 @@ export const UserTable = () => {
               <th>Address</th>
               <th>Tasks</th>
               <th></th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -53,8 +56,19 @@ export const UserTable = () => {
                   )}
                 </td>
                 <td>
-                  <Link to={`/users/${user.id}?no-modify=true`} className='link-dark'>
+                  <Link
+                    to={`/users/${user.id}?no-modify=true`}
+                    className="link-dark"
+                  >
                     <FaEye />
+                  </Link>
+                </td>
+                <td>
+                  <Link
+                    to={`/users/${user.id}`}
+                    className="link-dark"
+                  >
+                    <FaPencilAlt />
                   </Link>
                 </td>
               </tr>
