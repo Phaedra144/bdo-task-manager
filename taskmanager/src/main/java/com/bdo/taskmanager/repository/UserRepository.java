@@ -14,9 +14,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query("SELECT u FROM User u WHERE u.id = :id")
   Optional<User> findById(@Param("id") Integer id);
 
-  @Query("SELECT u FROM User u LEFT JOIN FETCH u.tasks t WHERE u.id = :id AND u.deleted = false AND (t.deleted = false OR t.deleted IS NULL)")
+  @Query("SELECT u FROM User u LEFT JOIN u.tasks t WHERE u.id = :id AND u.deleted = false AND (t.deleted = false OR t.deleted IS NULL)")
   Optional<User> findByIdWithNonDeletedTasks(@Param("id") Integer id);
 
-  @Query("select u from User u left join fetch u.tasks t where u.deleted = false and (t.deleted = false or t.deleted is null)")
+  @Query("select u from User u left join u.tasks t where u.deleted = false and (t.deleted = false or t.deleted is null)")
   List<User> findAllNonDeletedWithNonDeletedTasks();
 }
