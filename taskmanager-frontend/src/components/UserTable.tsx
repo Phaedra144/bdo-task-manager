@@ -1,5 +1,26 @@
+import { useEffect, useState } from 'react';
+import { getUsers } from '../api/TaskManagerApiService';
+import { User as UserType } from '../types/UserTasksTypes';
+
 export const UserTable = () => {
-  const users = [
+  const [users, setUsers] = useState<UserType[]>([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = () => {
+    getUsers()
+      .then((response) => {
+        console.log(response)
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const usersExample = [
     {
       id: 1,
       fullName: 'John Doe',
@@ -40,7 +61,7 @@ export const UserTable = () => {
                 <td>{user.id}</td>
                 <td>{user.fullName}</td>
                 <td>{user.email}</td>
-                <td>{user.address}</td>
+                {/* <td>{user.address}</td> */}
                 <td>
                   {user.tasks.map((task) => (
                     <span key={task.id}>{task.title} </span>
