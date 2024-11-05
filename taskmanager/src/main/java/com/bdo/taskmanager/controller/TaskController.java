@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class TaskController {
   }
 
   @PostMapping("/users/{userId}/tasks")
-  public ResponseEntity<Task> postMethodName(@PathVariable int userId, @RequestBody Task entity) {
+  public ResponseEntity<Task> createTask(@PathVariable int userId, @RequestBody Task entity) {
     Optional<User> user = userService.findById(userId);
     if (user.isEmpty()) {
       throw new UserNotFoundException("User not found");
@@ -56,7 +57,7 @@ public class TaskController {
   }
 
   @PutMapping("/users/{userId}/tasks")
-  public ResponseEntity<Task> putMethodName(@PathVariable int userId, @RequestBody Task entity) {
+  public ResponseEntity<Task> updateTask(@PathVariable int userId, @RequestBody Task entity) {
     Optional<User> user = userService.findById(userId);
     if (user.isEmpty()) {
       throw new UserNotFoundException("User not found");
@@ -67,6 +68,21 @@ public class TaskController {
     }
     Task updatedTask = taskService.update(entity, user.get());
     return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/users/{userId}/tasks")
+  public ResponseEntity<String> deleteTask(@PathVariable int userId, @PathVariable int id) {
+    Optional<User> user = userService.findById(userId);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException("User not found");
+    }
+    Optional<Task> task = taskService.findByIdNonDeleted(userId, id);
+    if (task.isEmpty()) {
+      throw new TaskNotFoundException("Task not found");
+    }
+    taskService.delete(task.get());
+    return new ResponseEntity<>(
+        String.format("Task with id: %d deleted successfully", task.get().getId()), HttpStatus.OK);
   }
 
 }
