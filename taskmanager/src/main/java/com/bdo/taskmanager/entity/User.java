@@ -27,6 +27,8 @@ public class User {
   private Integer id;
   private String fullName;
   private String password;
+  @JsonIgnore
+  private byte[] salt;
   private String email;
   @JsonIgnore
   private boolean deleted = Boolean.FALSE;
@@ -72,6 +74,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public byte[] getSalt() {
+    return salt;
+  }
+
+  public void setSalt(byte[] salt) {
+    this.salt = salt;
   }
 
   public String getEmail() {

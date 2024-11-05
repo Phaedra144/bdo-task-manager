@@ -26,6 +26,9 @@ public class UserService {
   }
 
   public User save(User user) {
+    byte[] salt = HashingService.generateSalt();
+    user.setSalt(salt);
+    user.setPassword(HashingService.hashingPassword(user.getPassword(), salt));
     return userRepository.save(user);
   }
 
