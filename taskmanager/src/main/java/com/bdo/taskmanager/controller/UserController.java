@@ -48,16 +48,16 @@ public class UserController {
     return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
   }
 
-  @PutMapping("/users/{id}")
-  public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
-    Optional<User> existingUser = userService.findByIdWithNonDeletedTasks(id);
+  @PutMapping("/users")
+  public ResponseEntity<User> updateUser(@RequestBody User user) {
+    Optional<User> existingUser = userService.findByIdWithNonDeletedTasks(user.getId());
     if (existingUser.isEmpty()) {
       throw new UserNotFoundException("User not found, update failed");
     }
     if (!existingUser.get().getEmail().equals(user.getEmail())) {
       throw new EmailCanNotBeChanged("Email can not be changed");
     }
-    User updatedUser = userService.updateUser(id, user);
+    User updatedUser = userService.updateUser(user);
     return new ResponseEntity<>(updatedUser, HttpStatus.OK);
   }
 

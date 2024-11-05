@@ -19,8 +19,17 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(UserIdMisMatchException.class)
-  public ResponseEntity<?> handleInvalidUserException(UserIdMisMatchException ex, WebRequest request) {
+  @ExceptionHandler(TaskNotFoundException.class)
+  public ResponseEntity<?> handleInvalidUserException(TaskNotFoundException ex,
+      WebRequest request) {
+    ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
+        request.getDescription(false));
+    return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(EmailCanNotBeChanged.class)
+  public ResponseEntity<?> handleEmailCanNotBeChangedException(EmailCanNotBeChanged ex,
+      WebRequest request) {
     ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
         request.getDescription(false));
     return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
