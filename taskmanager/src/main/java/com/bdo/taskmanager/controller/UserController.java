@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,8 +57,18 @@ public class UserController {
     if (!existingUser.get().getEmail().equals(user.getEmail())) {
       throw new EmailCanNotBeChanged("Email can not be changed");
     }
-    User savedUser = userService.save(user);
-    return new ResponseEntity<>(savedUser, HttpStatus.OK);
+    User updatedUser = userService.updateUser(id, user);
+    return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/users/{id}")
+  public ResponseEntity<String> deleteUser(@PathVariable int id) {
+    Optional<User> existingUser = userService.findByIdWithNonDeletedTasks(id);
+    if (existingUser.isEmpty()) {
+      throw new UserNotFoundException("User not found, delete failed");
+    }
+    userService.deleteById(id);
+    return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
   }
 
 }
