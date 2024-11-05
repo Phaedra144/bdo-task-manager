@@ -43,10 +43,7 @@ export const UserTable = () => {
                 <td>{user.address}</td>
                 <td>
                   {user.tasks.map((task) => (
-                    <div key={task.id}>
-                      <span>{task.title}</span>
-                      <span>{task.description}</span>
-                    </div>
+                    <span key={task.id}>{task.title} </span>
                   ))}
                 </td>
               </tr>
