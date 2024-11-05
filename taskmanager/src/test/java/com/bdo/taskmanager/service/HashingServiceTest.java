@@ -47,4 +47,12 @@ public class HashingServiceTest {
     assertNull(hashedPassword);
   }
 
+  @Test
+  public void testHashingSaltWithNull() {
+    byte[] salt = null;
+    String password = "password";
+    String hashedPassword = HashingService.hashingPassword(password, salt);
+    assertNull(hashedPassword);
+  }
+
 }

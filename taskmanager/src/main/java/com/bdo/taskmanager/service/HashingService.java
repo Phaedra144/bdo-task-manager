@@ -9,7 +9,6 @@ import java.util.Base64;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-
 public class HashingService {
 
   public static byte[] generateSalt() {
@@ -24,7 +23,7 @@ public class HashingService {
   }
 
   private static String encodeWithHashing(String text, byte[] salt) {
-    if (text == null) {
+    if (text == null || salt == null) {
       return null;
     }
     KeySpec spec = new PBEKeySpec(text.toCharArray(), salt, 65536, 128);
