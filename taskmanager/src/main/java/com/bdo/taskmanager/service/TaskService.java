@@ -31,4 +31,9 @@ public class TaskService {
     return taskRepository.save(task);
   }
 
+  public Task update(Task task, User user) {
+    task.setUser(user);
+    return taskRepository.save(task);
+  }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,20 @@ public class TaskController {
     }
     Task savedTask = taskService.save(user.get(), entity);
     return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
+  }
+
+  @PutMapping("/users/{userId}/tasks")
+  public ResponseEntity<Task> putMethodName(@PathVariable int userId, @RequestBody Task entity) {
+    Optional<User> user = userService.findById(userId);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException("User not found");
+    }
+    Optional<Task> task = taskService.findByIdNonDeleted(userId, entity.getId());
+    if (task.isEmpty()) {
+      throw new TaskNotFoundException("Task not found");
+    }
+    Task updatedTask = taskService.update(entity, user.get());
+    return new ResponseEntity<>(updatedTask, HttpStatus.OK);
   }
 
 }
