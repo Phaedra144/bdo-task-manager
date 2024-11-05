@@ -20,3 +20,7 @@ export const getTasksByUserId = (userId: number) => {
 export const updateUser = (user: User) => {
   return apiClient.put(`/users`, user);
 };
+
+export const deleteUserById = (userId: number) => {
+  return apiClient.delete(`/users/${userId}`);
+};

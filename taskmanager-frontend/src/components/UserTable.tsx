@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { FaEye, FaPencilAlt } from 'react-icons/fa';
+import { FaEye, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
-import { getUsers } from '../api/TaskManagerApiService';
+import { deleteUserById, getUsers } from '../api/TaskManagerApiService';
 import { User } from '../types/UserTasksTypes';
 
 export const UserTable = () => {
@@ -16,6 +16,16 @@ export const UserTable = () => {
     getUsers()
       .then((response) => {
         setUsers(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteUser = (id: number) => {
+    deleteUserById(id)
+      .then(() => {
+        fetchUsers();
       })
       .catch((error) => {
         console.log(error);
@@ -66,6 +76,9 @@ export const UserTable = () => {
                   <Link to={`/users/${user.id}`} className="link-dark">
                     <FaPencilAlt />
                   </Link>
+                </td>
+                <td>
+                    <FaTrashAlt className='link-dark' onClick={() => deleteUser(user.id)} />
                 </td>
               </tr>
             ))}
